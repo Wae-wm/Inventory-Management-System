@@ -10,6 +10,11 @@ class Settings(BaseSettings):
     db_password: str = ""
     db_name: str = "inventory_db"
 
+    # กุญแจลับสำหรับเซ็น JWT ไม่มีค่าเริ่มต้นโดยตั้งใจ เพื่อไม่ให้ใครใช้ค่าเดาได้
+    secret_key: str
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60
+
     model_config = SettingsConfigDict(env_file=".env")
 
     @property

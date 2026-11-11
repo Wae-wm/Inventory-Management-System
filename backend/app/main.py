@@ -3,8 +3,11 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.routers import auth, users
 
 app = FastAPI(title="Inventory Management System")
+app.include_router(auth.router)
+app.include_router(users.router)
 
 
 @app.get("/health")

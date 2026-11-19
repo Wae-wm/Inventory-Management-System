@@ -8,7 +8,14 @@ from app.database import Base
 
 class StockMovement(Base):
     __tablename__ = "stock_movements"
-    __table_args__ = (CheckConstraint("quantity > 0", name="chk_movement_quantity"),)
+    # IN/OUT เก็บจำนวนเป็นบวกเสมอ ส่วน ADJUSTMENT เก็บส่วนต่างที่มีเครื่องหมาย (+ เพิ่ม, - ลด) แต่ห้ามเป็น 0
+    __table_args__ = (
+        CheckConstraint(
+            "(movement_type = 'ADJUSTMENT' AND quantity <> 0) "
+            "OR (movement_type <> 'ADJUSTMENT' AND quantity > 0)",
+            name="chk_movement_quantity",
+        ),
+    )
 
     movement_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     product_id: Mapped[int] = mapped_column(ForeignKey("products.product_id"))
